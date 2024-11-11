@@ -14,7 +14,7 @@ public class SmsTestJob {
 	@Autowired
 	private SmsService smsService;
 	
-	@Scheduled(cron = "0 0/10 * * * ?")
+	@Scheduled(cron = "0 0/5 * * * ?")
 	public void sendSMSTesting() {
 		boolean isSuccess = smsService.sendSMS();
 		logger.info("[Test Job] SMS sending result: " + (isSuccess ? "SUCCESSFUL" : "FAIL"));
