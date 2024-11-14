@@ -34,7 +34,7 @@ public class OdmHealthCheckJob {
 	
 	private HttpUtil httpUtil = new HttpUtil();
 		
-	@Scheduled(cron = "0 0/5 * * * ?")
+//	@Scheduled(cron = "0 0/5 * * * ?")
 	public void odmHealthChecking() {
 		boolean isAlive = false;
 		logger.info("[CRON JOB] odmHealthChecking: start to do health checking for ODM");
