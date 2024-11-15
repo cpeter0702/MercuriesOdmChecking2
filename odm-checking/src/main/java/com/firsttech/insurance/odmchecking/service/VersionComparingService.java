@@ -91,7 +91,7 @@ public class VersionComparingService {
 		reportList.addAll(this.getRptFooter(reportList));
 		
 		String rptOutputPath = environment.getProperty("output.path");
-		boolean isSuccess = FileUtil.writeToFile(reportList, rptOutputPath);
+		boolean isSuccess = FileUtil.writeToFile(reportList, rptOutputPath + "comparingReport_" + startDate + ".csv");
 		logger.info("比對報告產生結果: " + (isSuccess ? "SUCCESSFUL" : "FAIL"));
 		return isSuccess;
 	}
@@ -122,6 +122,7 @@ public class VersionComparingService {
 		List<String> nodeCode9 = null;
 		List<String> reportList = new ArrayList<>();
 		StringBuilder eachSb = null;
+		
 		
         for (Policy policy : policyList) {
         	eachSb = new StringBuilder();

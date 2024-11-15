@@ -15,7 +15,7 @@ public class OdmPostTesterService {
 	@Autowired
 	private Environment environment;
 
-	@Scheduled(cron = "0 0/3 * * * ?")
+//	@Scheduled(cron = "0 0/3 * * * ?")
 	public void doCronTest () {
 		doTest("20240901", "20241114");
 	}
