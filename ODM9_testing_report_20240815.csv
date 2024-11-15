@@ -1,0 +1,26 @@
+ODM Comparing Test Start from 20240815 to 20241115
+Test Date Time: 2024-11-15 10:05:00
+
+PolicyNo, Status, Diff
+=====================================================================================
+100001024967, PASS, NoteCode is same.
+157900794578, ERROR, Origin 發生錯誤
+157900794578, ERROR, Origin 發生錯誤
+681000197361, PASS, NoteCode is same.
+619400361801, PASS, NoteCode is same.
+952000223804, PASS, NoteCode is same.
+100001026823, PASS, NoteCode is same.
+100001026823, PASS, NoteCode is same.
+100001026823, PASS, NoteCode is same.
+100001026823, PASS, NoteCode is same.
+100001026823, PASS, NoteCode is same.
+100001026823, PASS, NoteCode is same.
+100001026823, PASS, NoteCode is same.
+600000828959, PASS, NoteCode is same.
+600000828959, PASS, NoteCode is same.
+600000828959, PASS, NoteCode is same.
+600000828959, PASS, NoteCode is same.
+600000828959, PASS, NoteCode is same.
+TA500072, ERROR, Origin 發生錯誤
+=====================================================================================
+ODM Testing Result PASS: 16, FAIL: 0, ERROR: 3
