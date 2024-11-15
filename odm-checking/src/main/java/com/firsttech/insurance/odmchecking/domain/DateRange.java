@@ -17,5 +17,9 @@ public class DateRange {
 		this.endDate = endDate;
 	}
 	
+	public String show () {
+		return startDate + " ~ " + endDate;
+	}
+	
 	
 }

@@ -1,6 +1,9 @@
 package com.firsttech.insurance.odmchecking.service.utils;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -56,6 +59,19 @@ public final class HttpUtil {
         return httpClient.execute(request, httpContext);
     }
 
+    public String getCurrentIP() {
+		String ipStr = null;
+		try {
+			String hostname = InetAddress.getLocalHost().getHostName();
+			InetAddress address = InetAddress.getByName(hostname);
+			ipStr = address.getHostAddress();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		
+		return ipStr;
+	}
+    
     private Registry<ConnectionSocketFactory> getRegistry()
         throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
         SSLContext sslContext = null;
