@@ -235,7 +235,7 @@ public class VersionComparingService {
 		String infoFilePath = environment.getProperty("current.ip.info");
 		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
 		String currentIP = infoMap.get("local.ip");
-		
+		logger.info("取得當下IP: " + currentIP);
 		// SIT
 		if (currentIP.startsWith("172.16.16")) {
 			if (target.equals("nb")) {
@@ -346,8 +346,8 @@ public class VersionComparingService {
 				rs.close();
 				stmt.close();
 	            conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				logger.debug("資源關閉...");
 			}
             
         }
