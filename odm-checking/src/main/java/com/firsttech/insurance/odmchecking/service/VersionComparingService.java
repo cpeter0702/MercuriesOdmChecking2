@@ -76,10 +76,7 @@ public class VersionComparingService {
 				iFail += 1;
 			} else if (eachRecord.contains("ERROR")) {
 				iError += 1;
-			} else {
-				if (eachRecord.contains(",")) 
-					logger.info("下面紀錄無法統計: " + eachRecord);
-			}
+			} 
 		}
 		
 		rptList.add("ODM Testing Result PASS: " + iPass + ", FAIL: " + iFail + ", ERROR: " + iError);
@@ -125,7 +122,6 @@ public class VersionComparingService {
 		List<String> nodeCode9 = null;
 		List<String> reportList = new ArrayList<>();
 		StringBuilder eachSb = null;
-		
 		
         for (Policy policy : policyList) {
         	eachSb = new StringBuilder();
@@ -269,7 +265,6 @@ public class VersionComparingService {
 		
 		// 取得當下 IP
 		String infoFilePath = environment.getProperty("current.ip.info");
-		logger.info("infoFilePath: ", infoFilePath);
 		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
 		String currentIP = infoMap.get("local.ip");
 		logger.info("取得當下IP: " + currentIP);
