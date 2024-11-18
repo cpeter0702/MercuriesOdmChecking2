@@ -134,7 +134,7 @@ public class VersionComparingService {
         		HttpResponse originResponse = httpUtil.httpRequestPost(odm8CheckUrl, policy.getCase_in(), headerMap);
 				int statusCode = originResponse.getStatusLine().getStatusCode();
 				String bodyContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
-				logger.info("origin status code: {}, return body: {}", statusCode, bodyContent);
+				logger.info("origin status code: {}, return body: {}", statusCode, (statusCode == 200 ? "" : bodyContent));
 	        	if (statusCode >= 200 && statusCode < 300) {
 	        		JsonNode originJsonNode = mapper.readTree(bodyContent);
 	        		nodeCode8 = originJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
@@ -155,7 +155,7 @@ public class VersionComparingService {
         		HttpResponse newResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getCase_in(), headerMap);
 	        	int statusCode = newResponse.getStatusLine().getStatusCode();
 	        	String bodyContent = EntityUtils.toString(newResponse.getEntity(), "UTF-8");
-				logger.info("new status code: {}, return body: {}", statusCode, bodyContent);
+				logger.info("new status code: {}, return body: {}", statusCode, (statusCode == 200 ? "" : bodyContent));
 	        	if (statusCode >= 200 && statusCode < 300) {
 	        		JsonNode newJsonNode = mapper.readTree(bodyContent);
 	        		nodeCode9 = newJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
