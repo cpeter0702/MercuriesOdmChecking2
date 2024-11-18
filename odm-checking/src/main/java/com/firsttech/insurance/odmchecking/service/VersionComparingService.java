@@ -243,6 +243,7 @@ public class VersionComparingService {
 		
 		// 取得當下 IP
 		String infoFilePath = environment.getProperty("current.ip.info");
+		logger.info("infoFilePath: ", infoFilePath);
 		Map<String, String> infoMap = FileUtil.getLocalIpInfo(infoFilePath);
 		String currentIP = infoMap.get("local.ip");
 		logger.info("取得當下IP: " + currentIP);
