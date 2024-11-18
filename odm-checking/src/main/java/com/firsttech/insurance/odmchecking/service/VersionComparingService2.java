@@ -334,7 +334,7 @@ public class VersionComparingService2 {
 		StringBuilder sqlSb = new StringBuilder();
 		sqlSb.append(" SELECT ");
 		sqlSb.append(" 		trans_no + policy_no + RowRank AS mappingKey, ");
-		sqlSb.append(" 		trans_no, policy_no, keep_date_time ");
+		sqlSb.append(" 		trans_no, policy_no, keep_date_time, ").append(columnName);
 		sqlSb.append(" FROM ( ");
 		sqlSb.append(" 		SELECT ");
 		sqlSb.append(" 			CAST(ROW_NUMBER() OVER (PARTITION BY trans_no, policy_no ORDER BY keep_date_time ASC) AS VARCHAR(5)) AS rowRank,");
