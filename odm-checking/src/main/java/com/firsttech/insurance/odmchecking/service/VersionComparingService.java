@@ -137,8 +137,11 @@ public class VersionComparingService {
 				int statusCode = originResponse.getStatusLine().getStatusCode();
 				String bodyContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
 				
+				if (policy.getPolicy_no().equals("157900794578")) {
+					logger.info("origin bodyContent: {}", bodyContent);
+				}
+				
 	        	if (statusCode >= 200 && statusCode < 300) {
-	        		logger.info("origin policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
 	        		JsonNode originJsonNode = mapper.readTree(bodyContent);
 	        		nodeCode8 = originJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
 				} else {
@@ -160,6 +163,11 @@ public class VersionComparingService {
         		HttpResponse newResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getCase_in(), headerMap);
 	        	int statusCode = newResponse.getStatusLine().getStatusCode();
 	        	String bodyContent = EntityUtils.toString(newResponse.getEntity(), "UTF-8");
+	        	
+	        	if (policy.getPolicy_no().equals("157900794578")) {
+					logger.info("new bodyContent: {}", bodyContent);
+				}
+	        	
 	        	if (statusCode >= 200 && statusCode < 300) {
 	        		logger.info("new policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
 	        		JsonNode newJsonNode = mapper.readTree(bodyContent);
@@ -181,7 +189,6 @@ public class VersionComparingService {
         	String diff = "";
         	
         	if (nodeCode8.isEmpty() || nodeCode8 == null) {
-        		logger.info("===> policyNo: {}, nodeCode8: {}", policy.getPolicy_no(), nodeCode8);
         		status = "ERROR";
         		diff = "Origin 發生錯誤";
 			} else if (nodeCode9.isEmpty() || nodeCode9 == null) {
