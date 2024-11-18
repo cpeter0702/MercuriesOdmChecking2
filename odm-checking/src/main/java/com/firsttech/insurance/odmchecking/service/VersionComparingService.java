@@ -142,7 +142,12 @@ public class VersionComparingService {
 				
 	        	if (statusCode >= 200 && statusCode < 300) {
 	        		JsonNode originJsonNode = mapper.readTree(originalContent);
-	        		nodeCode8 = originJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
+	        		if (target.equals("nb")) {
+	        			nodeCode8 = originJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
+	        		} else {
+	        			nodeCode8 = originJsonNode.path("VerifyResult").path("resultItem").findValuesAsText("noteCode");
+	        		}
+	        		
 				} else {
 					logger.info("origin FAIL policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  originalContent);
 				}
@@ -163,11 +168,17 @@ public class VersionComparingService {
 	        	int statusCode = newResponse.getStatusLine().getStatusCode();
 	        	newContent = EntityUtils.toString(newResponse.getEntity(), "UTF-8");
 	        	
-	        	
 	        	if (statusCode >= 200 && statusCode < 300) {
 	        		logger.info("new policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
 	        		JsonNode newJsonNode = mapper.readTree(newContent);
-	        		nodeCode9 = newJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
+	        		
+	        		if (target.equals("nb")) {
+	        			nodeCode9 = newJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
+	        		} else {
+	        			nodeCode9 = newJsonNode.path("VerifyResult").path("resultItem").findValuesAsText("noteCode");
+	        		}
+	        		
+	        		
 				} else {
 					logger.info("new FAIL policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  newContent);
 				}
