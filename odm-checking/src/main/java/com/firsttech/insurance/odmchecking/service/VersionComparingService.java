@@ -37,6 +37,7 @@ public class VersionComparingService {
 	
 	@Autowired
 	private Environment environment;
+	
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	public List<String> getRptHeader (String startDate, String endDate) {
