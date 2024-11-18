@@ -77,7 +77,8 @@ public class VersionComparingService {
 			} else if (eachRecord.contains("ERROR")) {
 				iError += 1;
 			} else {
-				logger.info("下面紀錄無法統計: " + eachRecord);
+				if (!eachRecord.contains(",")) 
+					logger.info("下面紀錄無法統計: " + eachRecord);
 			}
 		}
 		
@@ -329,6 +330,8 @@ public class VersionComparingService {
         String url = environment.getProperty("db.sit.url");
         String username = environment.getProperty("db.sit.username");
         String password = environment.getProperty("db.sit.password");
+        
+        logger.info("DB connection info: url: {}", url);
 
         List<Policy> list = new ArrayList<>();
         Connection conn = null;
