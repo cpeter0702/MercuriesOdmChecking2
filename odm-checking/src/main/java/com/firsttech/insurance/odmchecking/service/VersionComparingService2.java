@@ -115,7 +115,7 @@ public class VersionComparingService2 {
 				+ DateUtil.formatDateToString("yyyyMMddhhmmss", today) 
 				+ ".csv";
 		logger.info("匯出報告路徑: {}", rptOutputPath);
-		boolean isSuccess = FileUtil.writeToFile(reportBody, rptOutputPath);
+		boolean isSuccess = FileUtil.writeToFile(rptTotalList, rptOutputPath);
 		logger.info("比對報告產生結果: " + (isSuccess ? "SUCCESSFUL" : "FAIL"));
 		return isSuccess;
 		
