@@ -45,7 +45,7 @@ public class VersionComparingService {
 		rptList.add("Test Date Time: " + DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", new Date()));
 		rptList.add("");
 		rptList.add("PolicyNo, Status, Diff");
-		rptList.add("=====================================================================================");
+		rptList.add("===========================, ===========================, ==========================");
 		return rptList;
 	}
 	
@@ -63,7 +63,7 @@ public class VersionComparingService {
 	
 	private List<String> getRptFooter(List<String> reportBody) {
 		List<String> rptList = new ArrayList<>();
-		rptList.add("=====================================================================================");
+		rptList.add("===========================, ===========================, ==========================");
 		int iPass = 0;
 		int iFail = 0;
 		int iError = 0;
@@ -90,15 +90,15 @@ public class VersionComparingService {
 		reportList.addAll(this.getRptBody(startDate, endDate));
 		reportList.addAll(this.getRptFooter(reportList));
 		
-		String rptOutputPath = environment.getProperty("output.path");
-		boolean isSuccess = FileUtil.writeToFile(reportList, rptOutputPath + "comparingReport_" + startDate + ".csv");
+		String rptOutputPath = environment.getProperty("output.path") + "\\ODM9_testing_report_" + startDate + ".csv";
+		logger.info("匯出報告路徑: {}", rptOutputPath);
+		boolean isSuccess = FileUtil.writeToFile(reportList, rptOutputPath);
 		logger.info("比對報告產生結果: " + (isSuccess ? "SUCCESSFUL" : "FAIL"));
 		return isSuccess;
 	}
 	
-	
-	
 	private List<String> calODM (String target, String startDate, String endDate) {
+		logger.info("---------------------------------------------------------");
 		logger.info("開始比對目標: {} ", target);
 		HttpUtil httpUtil = new HttpUtil();
 		
@@ -116,6 +116,7 @@ public class VersionComparingService {
         
         // DB 取得驗測案例
         String sql = this.getQuerySQL(target, startDate, endDate);
+        logger.info("SQL: {}", sql);
 		List<Policy> policyList = this.getCaseInDatasFromDB(target, sql);
 		logger.info("DB 取出資料總比數為: {}" + policyList.size());
 		List<String> nodeCode8 = null;
@@ -130,8 +131,10 @@ public class VersionComparingService {
         	try {
         		HttpResponse originResponse = httpUtil.httpRequestPost(odm8CheckUrl, policy.getCase_in(), headerMap);
 				int statusCode = originResponse.getStatusLine().getStatusCode();
+				String bodyContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
+				logger.info("origin status code: {}, return body: {}", statusCode, bodyContent);
 	        	if (statusCode >= 200 && statusCode < 300) {
-	        		JsonNode originJsonNode = mapper.readTree(EntityUtils.toString(originResponse.getEntity(), "UTF-8"));
+	        		JsonNode originJsonNode = mapper.readTree(bodyContent);
 	        		nodeCode8 = originJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
 				}
         	
@@ -149,8 +152,10 @@ public class VersionComparingService {
         	try {
         		HttpResponse newResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getCase_in(), headerMap);
 	        	int statusCode = newResponse.getStatusLine().getStatusCode();
+	        	String bodyContent = EntityUtils.toString(newResponse.getEntity(), "UTF-8");
+				logger.info("new status code: {}, return body: {}", statusCode, bodyContent);
 	        	if (statusCode >= 200 && statusCode < 300) {
-	        		JsonNode newJsonNode = mapper.readTree(EntityUtils.toString(newResponse.getEntity(), "UTF-8"));
+	        		JsonNode newJsonNode = mapper.readTree(bodyContent);
 	        		nodeCode9 = newJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
 				}
 			} catch (KeyManagementException e) {
@@ -199,32 +204,37 @@ public class VersionComparingService {
 	}
 	
 	private String getDiffCodes(List<String> nodeCode1, List<String> nodeCode2) {
-        Map<String, Integer> map = new HashMap<>();
         
-        for (String code1 : nodeCode1) {
-        	if (map.containsKey(code1)) {
-        		int times = map.get(code1) + 1;
-        		map.put(code1, times);
-        	} else {
-        		map.put(code1, 1);
-        	}
-        }
-        
-        for (String code2 : nodeCode2) {
-        	if (map.containsKey(code2)) {
-        		int times = map.get(code2) + 1;
-        		map.put(code2, times);
-        	} else {
-        		map.put(code2, 1);
-        	}
-        }
-        
-        StringBuilder sb = new StringBuilder();
-        for (String key : map.keySet()) {
-        	if (map.get(key) == 1) {
-        		sb.append(key).append(";");
-        	}
-        }
+		StringBuilder sb = new StringBuilder();
+		for (String code1 : nodeCode1) {
+			boolean isDuplicated = false;
+			for (String code2 : nodeCode2) {
+				if (code1.equals(code2)) {
+					isDuplicated = true;
+					break;
+				}
+			}
+			
+			if (isDuplicated == false) {
+				sb.append("[少] " + code1).append("; ");
+			}
+		}
+		
+
+		for (String code2 : nodeCode2) {
+			boolean isDuplicated = false;
+			for (String code1 : nodeCode1) {
+				if (code2.equals(code1)) {
+					isDuplicated = true;
+					break;
+				}
+			}
+			
+			if (isDuplicated == false) {
+				sb.append("[多] " + code2).append("; ");
+			}
+		}
+		
         return sb.toString();
     }
 	

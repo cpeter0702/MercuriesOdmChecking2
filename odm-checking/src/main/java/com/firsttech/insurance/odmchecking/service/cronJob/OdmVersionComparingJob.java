@@ -17,7 +17,7 @@ public class OdmVersionComparingJob {
 	@Autowired
 	private VersionComparingService versionComparingService;
 	
-	@Scheduled(cron = "0 0/5 * * * ?")
+	@Scheduled(cron = "0 0/3 * * * ?")
 	public void doComparing() {
 		
 		DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyyMMdd");
