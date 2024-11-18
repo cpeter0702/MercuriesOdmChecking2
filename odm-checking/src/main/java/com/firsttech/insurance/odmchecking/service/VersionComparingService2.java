@@ -78,7 +78,7 @@ public class VersionComparingService2 {
 		rptTotalList.add("Test Date Time: " + DateUtil.formatDateToString("yyyy-MM-dd hh:mm:ss", today));
 		rptTotalList.add("");
 		rptTotalList.add("PolicyNo, Status, Diff");
-		rptTotalList.add("===========================, ===========================, ==========================");
+		rptTotalList.add("======================================================");
 		
 		// 3. 建立 Report Body: Elvis說 ETS不需要測試, 只測NB和TA
 		List<String> reportBody = new ArrayList<>();
@@ -90,7 +90,7 @@ public class VersionComparingService2 {
 		rptTotalList.addAll(reportBody);
 		
 		// 4. 建立 Report Footer
-		rptTotalList.add("===========================, ===========================, ==========================");
+		rptTotalList.add("======================================================");
 		int iPass = 0;
 		int iFail = 0;
 		int iError = 0;
