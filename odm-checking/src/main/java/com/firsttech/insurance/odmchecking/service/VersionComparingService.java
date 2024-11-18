@@ -132,7 +132,7 @@ public class VersionComparingService {
         	
         	// ODM firing : origin
         	try {
-        		HttpResponse originResponse = httpUtil.httpRequestPost(odm8CheckUrl, policy.getCase_in(), headerMap);
+        		HttpResponse originResponse = httpUtil.httpRequestPost(odm8CheckUrl, policy.getJsonStr(), headerMap);
 				int statusCode = originResponse.getStatusLine().getStatusCode();
 				originalContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
 				
@@ -160,7 +160,7 @@ public class VersionComparingService {
         	
         	// ODM firing : new 
         	try {
-        		HttpResponse newResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getCase_in(), headerMap);
+        		HttpResponse newResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getJsonStr(), headerMap);
 	        	int statusCode = newResponse.getStatusLine().getStatusCode();
 	        	newContent = EntityUtils.toString(newResponse.getEntity(), "UTF-8");
 	        	

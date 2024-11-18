@@ -72,7 +72,7 @@ public class TestManager {
 						if (!policyList.isEmpty()) {
 							for (Policy p : policyList) {
 								String policyNum = p.getPolicy_no();
-								String policyInput = p.getCase_in();
+								String policyInput = p.getJsonStr();
 
 								List<String> nodeCode8 = null;
 								List<String> nodeCode9 = null;

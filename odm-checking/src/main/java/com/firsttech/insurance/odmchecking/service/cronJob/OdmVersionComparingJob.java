@@ -9,13 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.firsttech.insurance.odmchecking.service.VersionComparingService;
+import com.firsttech.insurance.odmchecking.service.VersionComparingService2;
 
 public class OdmVersionComparingJob {
 	
 	private final static Logger logger = LoggerFactory.getLogger(OdmVersionComparingJob.class);
 	
 	@Autowired
-	private VersionComparingService versionComparingService;
+	private VersionComparingService2 versionComparingService2;
 	
 	@Scheduled(cron = "0 0/3 * * * ?")
 	public void doComparing() {
@@ -27,6 +28,6 @@ public class OdmVersionComparingJob {
 		todayStr = "20240815";
 		tomorrowStr = "20241115";
 		logger.info("[CRON JOB] start to do version comparing: {} ~ {}", todayStr, tomorrowStr);
-		versionComparingService.doComparing(todayStr, tomorrowStr);
+		versionComparingService2.doComparing(todayStr, tomorrowStr);
 	}
 }

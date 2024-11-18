@@ -4,11 +4,13 @@ package com.firsttech.insurance.odmchecking.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.firsttech.insurance.odmchecking.service.cronJob.OdmHealthCheckJob;
 
 @RestController
+@RequestMapping("/api")
 public class HomeController {
 	private final static Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
