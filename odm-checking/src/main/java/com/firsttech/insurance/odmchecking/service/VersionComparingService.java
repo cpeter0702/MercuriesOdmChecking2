@@ -54,11 +54,11 @@ public class VersionComparingService {
 		List<String> reportBody = new ArrayList<>();
 		List<String> nbList = this.calODM("nb", startDate, endDate);
 		List<String> taList = this.calODM("ta", startDate, endDate);
-		List<String> etsList = this.calODM("ets", startDate, endDate);
+//		List<String> etsList = this.calODM("ets", startDate, endDate);
 		
 		reportBody.addAll(nbList);
 		reportBody.addAll(taList);
-		reportBody.addAll(etsList);
+//		reportBody.addAll(etsList);
 		return reportBody;
 	}
 	
@@ -134,10 +134,13 @@ public class VersionComparingService {
         		HttpResponse originResponse = httpUtil.httpRequestPost(odm8CheckUrl, policy.getCase_in(), headerMap);
 				int statusCode = originResponse.getStatusLine().getStatusCode();
 				String bodyContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
-				logger.info("origin status code: {}, return body: {}", statusCode, (statusCode == 200 ? "" : bodyContent));
+				
 	        	if (statusCode >= 200 && statusCode < 300) {
+	        		logger.info("origin status code: {}", statusCode);
 	        		JsonNode originJsonNode = mapper.readTree(bodyContent);
 	        		nodeCode8 = originJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
+				} else {
+					logger.info("origin FAIL status code: {}, return body: {}", statusCode,  bodyContent);
 				}
         	
         	} catch (KeyManagementException e) {
@@ -155,10 +158,12 @@ public class VersionComparingService {
         		HttpResponse newResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getCase_in(), headerMap);
 	        	int statusCode = newResponse.getStatusLine().getStatusCode();
 	        	String bodyContent = EntityUtils.toString(newResponse.getEntity(), "UTF-8");
-				logger.info("new status code: {}, return body: {}", statusCode, (statusCode == 200 ? "" : bodyContent));
 	        	if (statusCode >= 200 && statusCode < 300) {
+	        		logger.info("new status code: {}", statusCode);
 	        		JsonNode newJsonNode = mapper.readTree(bodyContent);
 	        		nodeCode9 = newJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
+				} else {
+					logger.info("new FAIL status code: {}, return body: {}", statusCode,  bodyContent);
 				}
 			} catch (KeyManagementException e) {
 				e.printStackTrace();
