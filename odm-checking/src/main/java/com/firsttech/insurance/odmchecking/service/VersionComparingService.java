@@ -131,21 +131,20 @@ public class VersionComparingService {
         	eachSb = new StringBuilder();
         	nodeCode8 = null;
         	nodeCode9 = null;
+        	String originalContent = null;
+        	String newContent = null;
+        	
         	// ODM firing : origin
         	try {
         		HttpResponse originResponse = httpUtil.httpRequestPost(odm8CheckUrl, policy.getCase_in(), headerMap);
 				int statusCode = originResponse.getStatusLine().getStatusCode();
-				String bodyContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
-				
-				if (policy.getPolicy_no().equals("157900794578")) {
-					logger.info("origin bodyContent: {}", bodyContent);
-				}
+				originalContent = EntityUtils.toString(originResponse.getEntity(), "UTF-8");
 				
 	        	if (statusCode >= 200 && statusCode < 300) {
-	        		JsonNode originJsonNode = mapper.readTree(bodyContent);
+	        		JsonNode originJsonNode = mapper.readTree(originalContent);
 	        		nodeCode8 = originJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
 				} else {
-					logger.info("origin FAIL policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  bodyContent);
+					logger.info("origin FAIL policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  originalContent);
 				}
         	
         	} catch (KeyManagementException e) {
@@ -162,18 +161,15 @@ public class VersionComparingService {
         	try {
         		HttpResponse newResponse = httpUtil.httpRequestPost(odm9CheckUrl, policy.getCase_in(), headerMap);
 	        	int statusCode = newResponse.getStatusLine().getStatusCode();
-	        	String bodyContent = EntityUtils.toString(newResponse.getEntity(), "UTF-8");
+	        	newContent = EntityUtils.toString(newResponse.getEntity(), "UTF-8");
 	        	
-	        	if (policy.getPolicy_no().equals("157900794578")) {
-					logger.info("new bodyContent: {}", bodyContent);
-				}
 	        	
 	        	if (statusCode >= 200 && statusCode < 300) {
 	        		logger.info("new policyNo: {}, status code: {}", policy.getPolicy_no(), statusCode);
-	        		JsonNode newJsonNode = mapper.readTree(bodyContent);
+	        		JsonNode newJsonNode = mapper.readTree(newContent);
 	        		nodeCode9 = newJsonNode.path("outParam").path("resultItem").findValuesAsText("noteCode");
 				} else {
-					logger.info("new FAIL policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  bodyContent);
+					logger.info("new FAIL policyNo: {}, status code: {}, return body: {}", policy.getPolicy_no(), statusCode,  newContent);
 				}
 			} catch (KeyManagementException e) {
 				e.printStackTrace();
@@ -189,9 +185,11 @@ public class VersionComparingService {
         	String diff = "";
         	
         	if (nodeCode8.isEmpty() || nodeCode8 == null) {
+        		logger.info("nodeCode8 is empty or null, originalContent: {}", originalContent);
         		status = "ERROR";
         		diff = "Origin 發生錯誤";
 			} else if (nodeCode9.isEmpty() || nodeCode9 == null) {
+				logger.info("nodeCode9 is empty or null, newContent: {}", newContent);
 				status = "ERROR";
 				diff = "new 發生錯誤";
 			} else {
