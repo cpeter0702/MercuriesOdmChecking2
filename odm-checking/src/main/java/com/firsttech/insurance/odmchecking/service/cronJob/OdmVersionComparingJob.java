@@ -20,19 +20,21 @@ public class OdmVersionComparingJob {
 	@Autowired
 	private Environment environment;
 	
-	@Scheduled(cron = "0 5 * * * ?") // 每小時的五分執行
+	// 20250217 add by Peter: Elvis打電話來特別說因為已經上線, 所以被要求要註解掉整個功能
+//	@Scheduled(cron = "0 5 * * * ?") // 每小時的五分執行
 //	@Scheduled(cron = "0 0/3 * * * ?") // 每三分鐘執行一次
 	public void doComparing() throws ParseException, IOException {
 		String isActivated = environment.getProperty("cron.version.comparing");
-		if (isActivated == null || !isActivated.equals("Y")) {
-			logger.info("[CRON JOB] 不執行, 因為未在設定檔中啟動版本比對排程 cron.version.comparing: {}", isActivated);
-			return;
-		}
 		
-		String startRocDateTime = DateUtil.getROCDateTime("START");
-		String endRocDateTime = DateUtil.getROCDateTime("END");
-		logger.info("[CRON JOB] start to do version comparing: {} ~ {}", startRocDateTime, endRocDateTime);
-		versionComparingService.doComparing(startRocDateTime, endRocDateTime);
+//		if (isActivated == null || !isActivated.equals("Y")) {
+//			logger.info("[CRON JOB] 不執行, 因為未在設定檔中啟動版本比對排程 cron.version.comparing: {}", isActivated);
+//			return;
+//		}
+//		
+//		String startRocDateTime = DateUtil.getROCDateTime("START");
+//		String endRocDateTime = DateUtil.getROCDateTime("END");
+//		logger.info("[CRON JOB] start to do version comparing: {} ~ {}", startRocDateTime, endRocDateTime);
+//		versionComparingService.doComparing(startRocDateTime, endRocDateTime);
 	}
 	
 }
